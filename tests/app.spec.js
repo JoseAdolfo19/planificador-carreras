@@ -14,7 +14,7 @@ test.beforeEach(async ({ page }) => {
 
 test.describe('Dashboard (Resumen)', () => {
   test('renderiza el dashboard con titulo y metricas', async ({ page }) => {
-    await expect(page.getByRole('heading', { name: /Buenos dias, Juan/ })).toBeVisible()
+    await expect(page.getByRole('heading', { name: /Buenos dias, Jose/ })).toBeVisible()
     await expect(page.getByText('Completadas')).toBeVisible()
     await expect(page.getByText('Por completar')).toBeVisible()
     await expect(page.getByText('Cumplimiento')).toBeVisible()
@@ -46,7 +46,7 @@ test.describe('Dashboard (Resumen)', () => {
     await page.getByLabel('Correo electrónico').fill('60021765@ieslasalle.edu.pe')
     await page.getByLabel('Contraseña').fill('jose.iberico.as')
     await page.getByRole('button', { name: 'Entrar' }).click()
-    await expect(page.getByRole('heading', { name: /Buenos dias, Juan/ })).toBeVisible()
+    await expect(page.getByRole('heading', { name: /Buenos dias, Jose/ })).toBeVisible()
   })
 })
 
