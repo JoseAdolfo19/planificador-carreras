@@ -2,10 +2,10 @@ import { test, expect } from '@playwright/test'
 
 const BASE = 'http://127.0.0.1:5199'
 const TEST_TASKS = [
-  { id: 101, title: 'Terminar informe de mercado', course: 'Administracion', type: 'Trabajo', due: 'Hoy, 18:00', priority: 'Urgente', progress: 40, estimate: '2 h', status: 'En progreso' },
-  { id: 102, title: 'Repasar elasticidad y demanda', course: 'Economia', type: 'Estudio', due: 'Manana, 09:00', priority: 'Alta', progress: 20, estimate: '1 h', status: 'Pendiente' },
-  { id: 103, title: 'Preparar exposicion grupal', course: 'Comunicacion', type: 'Exposicion', due: 'Jue, 14:30', priority: 'Media', progress: 65, estimate: '1.5 h', status: 'En progreso' },
-  { id: 104, title: 'Resolver practica 04', course: 'Matematicas', type: 'Practica', due: 'Vie, 20:00', priority: 'Baja', progress: 0, estimate: '45 min', status: 'Pendiente' },
+  { id: 101, title: 'Terminar informe de mercado', course: 'Administracion Empresarial', type: 'Trabajo', due: 'Hoy, 18:00', priority: 'Urgente', progress: 40, estimate: '2 h', status: 'En progreso' },
+  { id: 102, title: 'Repasar legislacion', course: 'Legislacion laboral', type: 'Estudio', due: 'Manana, 09:00', priority: 'Alta', progress: 20, estimate: '1 h', status: 'Pendiente' },
+  { id: 103, title: 'Preparar exposicion grupal', course: 'Interpretacion y produccion de textos', type: 'Exposicion', due: 'Jue, 14:30', priority: 'Media', progress: 65, estimate: '1.5 h', status: 'En progreso' },
+  { id: 104, title: 'Resolver practica 04', course: 'Ofimatica', type: 'Practica', due: 'Vie, 20:00', priority: 'Baja', progress: 0, estimate: '45 min', status: 'Pendiente' },
 ]
 
 // Limpia localStorage antes de cada test para garantizar un estado aislado
@@ -120,12 +120,12 @@ test.describe('Tareas', () => {
 
   test('filtra por curso', async ({ page }) => {
     await page.locator('.nav-item', { hasText: 'Mis tareas' }).click()
-    await page.locator('.course-select').selectOption('Economia')
+    await page.locator('.course-select').selectOption('Legislacion laboral')
     const rows = page.locator('.task-row')
     const count = await rows.count()
     expect(count).toBeGreaterThan(0)
     for (let i = 0; i < count; i++) {
-      await expect(rows.nth(i)).toContainText('Economia')
+      await expect(rows.nth(i)).toContainText('Legislacion laboral')
     }
   })
 })
@@ -162,14 +162,14 @@ test.describe('Navegacion', () => {
     await page.getByLabel('Fecha de entrega').fill('2026-08-15')
     await page.getByRole('button', { name: 'Guardar tarea' }).click()
     await expect(page.getByText('Entrega de ensayo')).toBeVisible()
-    await expect(page.locator('.calendar-task')).toContainText('Administracion')
+    await expect(page.locator('.calendar-task')).toContainText('Legislacion laboral')
     await page.locator('.nav-item', { hasText: 'Mis tareas' }).click()
     await expect(page.locator('.task-row', { hasText: 'Entrega de ensayo' }).locator('.priority-pill')).toHaveText('Urgente')
   })
 
   test('cursos muestra la lista y permite agregar', async ({ page }) => {
     await page.locator('.nav-item', { hasText: 'Cursos' }).click()
-    await expect(page.locator('.course-row')).toHaveCount(11)
+    await expect(page.locator('.course-row')).toHaveCount(7)
     await page.getByRole('button', { name: 'Agregar curso' }).click()
     await page.locator('.task-form input[placeholder*="Nombre"]').fill('Nuevo Curso E2E')
     await page.getByRole('button', { name: 'Crear curso' }).click()
@@ -178,7 +178,7 @@ test.describe('Navegacion', () => {
 
   test('edita un curso', async ({ page }) => {
     await page.locator('.nav-item', { hasText: 'Cursos' }).click()
-    await page.getByRole('button', { name: 'Editar Administracion', exact: true }).click()
+    await page.getByRole('button', { name: 'Editar Administracion Empresarial', exact: true }).click()
     await page.locator('.course-edit-form .form-input').fill('Administracion Editada')
     await page.getByRole('button', { name: 'Guardar' }).click()
     await expect(page.getByText('Administracion Editada')).toBeVisible()
@@ -188,9 +188,9 @@ test.describe('Navegacion', () => {
     page.on('dialog', (dialog) => dialog.accept())
     await page.locator('.nav-item', { hasText: 'Cursos' }).click()
     const countBefore = await page.locator('.course-row').count()
-    await page.getByRole('button', { name: 'Eliminar Economia' }).click()
+    await page.getByRole('button', { name: 'Eliminar Legislacion laboral' }).click()
     await expect(page.locator('.course-row')).toHaveCount(countBefore - 1)
-    await expect(page.getByText('Economia')).toHaveCount(0)
+    await expect(page.getByText('Legislacion laboral')).toHaveCount(0)
   })
 
   test('configuracion muestra el panel', async ({ page }) => {

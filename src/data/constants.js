@@ -7,10 +7,6 @@ export const LOGIN_PASSWORD = 'jose.iberico.as'
 
 export const defaultTasks = []
 export const defaultCourses = [
-  { name: 'Administracion', code: 'ADM-204', color: 'coral', progress: 0, tasks: 0 },
-  { name: 'Economia', code: 'ECO-110', color: 'blue', progress: 0, tasks: 0 },
-  { name: 'Comunicacion', code: 'COM-101', color: 'yellow', progress: 0, tasks: 0 },
-  { name: 'Matematicas', code: 'MAT-102', color: 'green', progress: 0, tasks: 0 },
   { name: 'Legislacion laboral', code: 'LEG-201', color: 'coral', progress: 0, tasks: 0 },
   { name: 'Legislacion Mercantil y Societaria', code: 'LEG-202', color: 'blue', progress: 0, tasks: 0 },
   { name: 'Interpretacion y produccion de textos', code: 'TEX-103', color: 'yellow', progress: 0, tasks: 0 },

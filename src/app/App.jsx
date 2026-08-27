@@ -21,13 +21,16 @@ export default function App() {
     if (profile.name === 'Juan Perez') setProfile(defaultProfile)
   }, [profile.name, setProfile])
   useEffect(() => {
-    setTasks((current) => current.filter((task) => ![1, 2, 3, 4].includes(task.id)))
+    const legacyCourses = ['Administracion', 'Economia', 'Comunicacion', 'Matematicas']
+    setTasks((current) => current.filter((task) => ![1, 2, 3, 4].includes(task.id) && !legacyCourses.includes(task.course)))
   }, [setTasks])
   useEffect(() => {
     setCourseList((current) => {
+      const legacyCourses = new Set(['Administracion', 'Economia', 'Comunicacion', 'Matematicas'])
       const existing = new Set(current.map((course) => course.name))
+      const filtered = current.filter((course) => !legacyCourses.has(course.name))
       const missing = defaultCourses.filter((course) => !existing.has(course.name))
-      return missing.length ? [...current, ...missing] : current
+      return filtered.length !== current.length || missing.length ? [...filtered, ...missing] : current
     })
   }, [setCourseList])
   const courseNames = useMemo(() => courseList.map((course) => course.name), [courseList])
