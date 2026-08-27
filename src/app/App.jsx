@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import '../App.css'
 import LoginView from '../components/auth/LoginView'
 import DashboardView from '../components/dashboard/DashboardView'
@@ -17,6 +17,9 @@ export default function App() {
   const [courseFilter, setCourseFilter] = useState('Todos')
   const [showModal, setShowModal] = useState(false)
   const [notice, setNotice] = useState('')
+  useEffect(() => {
+    if (profile.name === 'Juan Perez') setProfile(defaultProfile)
+  }, [profile.name, setProfile])
   const courseNames = useMemo(() => courseList.map((course) => course.name), [courseList])
   const visibleTasks = useMemo(() => { let list = tasks; if (filter !== 'Todas') list = list.filter((task) => task.priority === filter); if (courseFilter !== 'Todos') list = list.filter((task) => task.course === courseFilter); return list }, [tasks, filter, courseFilter])
   const coursesWithDeliveries = useMemo(() => courseList.map((course) => { const courseTasks = tasks.filter((task) => task.course === course.name && task.progress !== 100); if (courseTasks.length === 0) return null; const progress = Math.round(courseTasks.reduce((total, task) => total + task.progress, 0) / courseTasks.length); return { ...course, tasks: courseTasks.length, progress } }).filter(Boolean), [courseList, tasks])
