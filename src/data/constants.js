@@ -17,7 +17,7 @@ export const defaultCourses = [
   { name: 'Comunicacion', code: 'COM-101', color: 'yellow', progress: 86, tasks: 3 },
   { name: 'Matematicas', code: 'MAT-102', color: 'green', progress: 40, tasks: 4 },
 ]
-export const defaultProfile = { name: 'Juan Perez', detail: 'Estudiante · 4to semestre' }
+export const defaultProfile = { name: 'Jose Adolfo Iberico Suña', detail: 'Estudiante · 4to semestre' }
 export const priorityOptions = ['Urgente', 'Alta', 'Media', 'Baja']
 export const courseColors = ['coral', 'blue', 'yellow', 'green']
 export const typeOptions = ['Trabajo', 'Estudio', 'Exposicion', 'Practica', 'Proyecto', 'Examen']
