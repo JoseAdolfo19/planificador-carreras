@@ -3,6 +3,7 @@ import { AgendaItem, CourseRow, FocusTask, Metric } from "../ui/shared";
 
 export default function DashboardView({
   profileName,
+  todayTasks,
   tasks,
   coursesWithDeliveries,
   completedCount,
@@ -118,31 +119,17 @@ export default function DashboardView({
               </button>
             </div>
             <div className="timeline">
-              <AgendaItem
-                time="08:00"
-                title="Clase: Administracion"
-                meta="ADM-204 · Aula 301"
-                color="coral"
-              />
-              <AgendaItem
-                time="10:30"
-                title="Trabajo grupal Economia"
-                meta="Salon de estudio 2"
-                color="blue"
-                active
-              />
-              <AgendaItem
-                time="14:00"
-                title="Clase: Comunicacion"
-                meta="COM-101 · Aula 112"
-                color="yellow"
-              />
-              <AgendaItem
-                time="16:00"
-                title="Tutorias Matematicas"
-                meta="Centro de apoyo"
-                color="green"
-              />
+              {todayTasks.length === 0 ? (
+                <p className="empty-state">No hay eventos programados para hoy.</p>
+              ) : todayTasks.map((task) => (
+                <AgendaItem
+                  key={task.id}
+                  time={task.due?.includes(",") ? task.due.split(",").pop().trim() : "Todo el día"}
+                  title={task.title}
+                  meta={`${task.course} · ${task.type}`}
+                  color="coral"
+                />
+              ))}
             </div>
             <button
               className="outline-button full-width"
