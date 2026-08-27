@@ -1,11 +1,21 @@
 import { test, expect } from '@playwright/test'
 
 const BASE = 'http://127.0.0.1:5199'
+const TEST_TASKS = [
+  { id: 101, title: 'Terminar informe de mercado', course: 'Administracion', type: 'Trabajo', due: 'Hoy, 18:00', priority: 'Urgente', progress: 40, estimate: '2 h', status: 'En progreso' },
+  { id: 102, title: 'Repasar elasticidad y demanda', course: 'Economia', type: 'Estudio', due: 'Manana, 09:00', priority: 'Alta', progress: 20, estimate: '1 h', status: 'Pendiente' },
+  { id: 103, title: 'Preparar exposicion grupal', course: 'Comunicacion', type: 'Exposicion', due: 'Jue, 14:30', priority: 'Media', progress: 65, estimate: '1.5 h', status: 'En progreso' },
+  { id: 104, title: 'Resolver practica 04', course: 'Matematicas', type: 'Practica', due: 'Vie, 20:00', priority: 'Baja', progress: 0, estimate: '45 min', status: 'Pendiente' },
+]
 
 // Limpia localStorage antes de cada test para garantizar un estado aislado
 test.beforeEach(async ({ page }) => {
   await page.goto(BASE)
-  await page.evaluate(() => window.localStorage.clear())
+  await page.waitForTimeout(100)
+  await page.evaluate((tasks) => {
+    window.localStorage.clear()
+    window.localStorage.setItem('studyManager.tasks', JSON.stringify(tasks))
+  }, TEST_TASKS)
   await page.goto(BASE)
   await page.getByLabel('Correo electrónico').fill('60021765@ieslasalle.edu.pe')
   await page.getByLabel('Contraseña').fill('jose.iberico.as')
@@ -159,7 +169,7 @@ test.describe('Navegacion', () => {
 
   test('cursos muestra la lista y permite agregar', async ({ page }) => {
     await page.locator('.nav-item', { hasText: 'Cursos' }).click()
-    await expect(page.locator('.course-row')).toHaveCount(4)
+    await expect(page.locator('.course-row')).toHaveCount(11)
     await page.getByRole('button', { name: 'Agregar curso' }).click()
     await page.locator('.task-form input[placeholder*="Nombre"]').fill('Nuevo Curso E2E')
     await page.getByRole('button', { name: 'Crear curso' }).click()
@@ -168,7 +178,7 @@ test.describe('Navegacion', () => {
 
   test('edita un curso', async ({ page }) => {
     await page.locator('.nav-item', { hasText: 'Cursos' }).click()
-    await page.getByRole('button', { name: 'Editar Administracion' }).click()
+    await page.getByRole('button', { name: 'Editar Administracion', exact: true }).click()
     await page.locator('.course-edit-form .form-input').fill('Administracion Editada')
     await page.getByRole('button', { name: 'Guardar' }).click()
     await expect(page.getByText('Administracion Editada')).toBeVisible()

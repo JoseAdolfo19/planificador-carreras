@@ -20,6 +20,16 @@ export default function App() {
   useEffect(() => {
     if (profile.name === 'Juan Perez') setProfile(defaultProfile)
   }, [profile.name, setProfile])
+  useEffect(() => {
+    setTasks((current) => current.filter((task) => ![1, 2, 3, 4].includes(task.id)))
+  }, [setTasks])
+  useEffect(() => {
+    setCourseList((current) => {
+      const existing = new Set(current.map((course) => course.name))
+      const missing = defaultCourses.filter((course) => !existing.has(course.name))
+      return missing.length ? [...current, ...missing] : current
+    })
+  }, [setCourseList])
   const courseNames = useMemo(() => courseList.map((course) => course.name), [courseList])
   const visibleTasks = useMemo(() => { let list = tasks; if (filter !== 'Todas') list = list.filter((task) => task.priority === filter); if (courseFilter !== 'Todos') list = list.filter((task) => task.course === courseFilter); return list }, [tasks, filter, courseFilter])
   const coursesWithDeliveries = useMemo(() => courseList.map((course) => { const courseTasks = tasks.filter((task) => task.course === course.name && task.progress !== 100); if (courseTasks.length === 0) return null; const progress = Math.round(courseTasks.reduce((total, task) => total + task.progress, 0) / courseTasks.length); return { ...course, tasks: courseTasks.length, progress } }).filter(Boolean), [courseList, tasks])
